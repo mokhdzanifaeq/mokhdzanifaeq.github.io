@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Challenge 9: Test your skill EP02to begin, instead of going through the binary step by step and dive through functions, let us skim through the main routine at 0x009E12A0. we can identify that the bin">
+<meta name="keywords" content="ctf,writeup,reverse engineer,ollydbg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wargames.my 2016 writeups">
+<meta property="og:url" content="http://mokhdzanifaeq.github.io/2016/05/24/wargames-my-2016-writeups/index.html">
+<meta property="og:site_name" content="mkhdznfq">
+<meta property="og:description" content="Challenge 9: Test your skill EP02to begin, instead of going through the binary step by step and dive through functions, let us skim through the main routine at 0x009E12A0. we can identify that the bin">
+<meta property="og:image" content="https://i.imgur.com/PKusyOC.png">
+<meta property="og:image" content="https://i.imgur.com/0sJZiMM.png">
+<meta property="og:image" content="https://i.imgur.com/4J9lHuf.png">
+<meta property="og:image" content="https://i.imgur.com/LKkhTCG.png">
+<meta property="og:image" content="https://i.imgur.com/N65ltt8.png">
+<meta property="og:image" content="http://i.imgur.com/zXJ4Zrw.gif">
+<meta property="og:image" content="https://i.imgur.com/iRnohOF.png">
+<meta property="og:image" content="https://i.imgur.com/iZfkw5m.png">
+<meta property="og:updated_time" content="2017-04-09T15:45:50.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wargames.my 2016 writeups">
+<meta name="twitter:description" content="Challenge 9: Test your skill EP02to begin, instead of going through the binary step by step and dive through functions, let us skim through the main routine at 0x009E12A0. we can identify that the bin">
+<meta name="twitter:image" content="https://i.imgur.com/PKusyOC.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Wargames.my 2016 writeups</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/09/28/extracting-instagram-signature-key-2/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/11/28/kpmg-cyber-security-challenge-2016-writeups/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+    </span>
+    <br/>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-9-Test-your-skill-EP02"><span class="toc-number">1.</span> <span class="toc-text">Challenge 9: Test your skill EP02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-12-Test-your-skill-EP03"><span class="toc-number">2.</span> <span class="toc-text">Challenge 12: Test your skill EP03</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>mkhdznfq</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fa fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">Home</a></li>
+       
+        <li><a href="/archives/">Archives</a></li>
+       
+        <li><a href="http://github.com/mokhdzanifaeq">Projects</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Wargames.my 2016 writeups
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">mkhdznfq</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-05-24T07:11:23.000Z" itemprop="datePublished">2016-05-24</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ctf/">ctf</a>, <a class="tag-link" href="/tags/ollydbg/">ollydbg</a>, <a class="tag-link" href="/tags/reverse-engineer/">reverse engineer</a>, <a class="tag-link" href="/tags/writeup/">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Challenge-9-Test-your-skill-EP02"><a href="#Challenge-9-Test-your-skill-EP02" class="headerlink" title="Challenge 9: Test your skill EP02"></a>Challenge 9: Test your skill EP02</h2><p>to begin, instead of going through the binary step by step and dive through functions, let us skim through the main routine at 0x009E12A0. we can identify that the binary expecting 1 argument</p>
+<p><img src="https://i.imgur.com/PKusyOC.png" alt="argument"></p>
+<p>we also can identify the “good-boy” block which will print “Yeah” when the condition is met</p>
+<p><img src="https://i.imgur.com/0sJZiMM.png" alt="good boy"></p>
+<p>now we can analyse the main routine </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">main(argc, argv) &#123;</div><div class="line">    <span class="keyword">if</span> (argc == <span class="number">2</span>) &#123;</div><div class="line">        x = check(*argv[<span class="number">1</span>], <span class="number">0</span>, <span class="number">10</span>);</div><div class="line">        x = ror(x, <span class="number">3</span>);</div><div class="line">        x = bswap(x);</div><div class="line">        x += <span class="number">0xFC669293</span>;</div><div class="line">        x ^= <span class="number">0xEE9579F</span>;</div><div class="line">        x *= <span class="number">0x341</span>;</div><div class="line">        <span class="keyword">if</span> (x == <span class="number">0x68616559</span>) &#123;</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Yeah"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>reverse the algorithm to get the expected output from the check function </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">x = <span class="number">0x68616559</span>;</div><div class="line">x /= <span class="number">0x341</span>;</div><div class="line">x ^= <span class="number">0xEE9579F</span>;</div><div class="line">x -= <span class="number">0xFC669293</span>;</div><div class="line">x = bswap(x);</div><div class="line">x = rol(x, <span class="number">3</span>);</div><div class="line"><span class="comment">// x = 0x9d831097 (2642612375 decimal.)</span></div></pre></td></tr></table></figure>
+<p>now let’s dive into the check function. after going through the function step by step, the only block that caught my interest is a loop that start at 0x009E2CF6</p>
+<p><img src="https://i.imgur.com/4J9lHuf.png" alt="loop"></p>
+<p>simplified algorithm of the loop: </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">result = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; <span class="built_in">strlen</span>(arg); i++) &#123;</div><div class="line">    x = arg[i];</div><div class="line">    <span class="comment">// for the sake of simplifying the algorithm, i'll use isdigit()</span></div><div class="line">    <span class="comment">// it is actually a sequence of ascii values manipulation</span></div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">isdigit</span>(x)) <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">if</span> (result &gt; <span class="number">0x19999999</span>) <span class="keyword">break</span>;</div><div class="line">    result *= <span class="number">10</span>;</div><div class="line">    result += atoi(x);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>from there, we can identify the argument need to be passed to the binary in order to produce the result == 2642612375. the argument is… 2642612375. trolled hard! </p>
+<p><img src="https://i.imgur.com/LKkhTCG.png" alt="flag"></p>
+<h2 id="Challenge-12-Test-your-skill-EP03"><a href="#Challenge-12-Test-your-skill-EP03" class="headerlink" title="Challenge 12: Test your skill EP03"></a>Challenge 12: Test your skill EP03</h2><p><img src="https://i.imgur.com/N65ltt8.png" alt="junk"></p>
+<p>i didn’t manage to solve this during the competition because i was too focused on another challenge. not to mention the binary is heavily obfuscated which brings out the laziness in me. 500 points would be sweet to secure the victory though. anyway, the binary expected one argument to be passed. we can see a local call to 0x0040117b after the entrypoint where the stack is updated with:</p>
+<ul>
+<li>WORD nulls</li>
+<li>BYTE values</li>
+<li>WORD values</li>
+<li>a few others</li>
+</ul>
+<p>then, the binary jump to 0x00401000 with our argument as the first parameter (esp+4). let us put a memory breakpoint on the argument to pinpoint where it will be accessed</p>
+<p><img src="http://i.imgur.com/zXJ4Zrw.gif" alt="breakpoint"></p>
+<p>continue the program (F9) and we can see there are 2 lines that access the argument, 0x004010B7 and 0x004010C6</p>
+<p><img src="https://i.imgur.com/iRnohOF.png" alt="break"></p>
+<p>from there, we can understand how the checking algorithm works</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">004020AF   MOV EDX,DWORD PTR DS:[EAX]       ; edx = &amp;arg</div><div class="line">004020B1   MOV EAX,DWORD PTR SS:[EBP-8C]    ; eax = loop_counter</div><div class="line">004020B7   ADD EDX,EAX                      ; edx += eax</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">004020C2   MOVSX EAX,BYTE PTR DS:[EDX]      ; eax = *(edx)[0]</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">0040211F   MOV WORD PTR DS:[ECX],AX         ; *(0x19FF20) = ax</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">00402277   MOVSX EAX,WORD PTR DS:[ECX]      ; eax = *(0x19FF20)</div><div class="line">0040227A   SHL EAX,2                        ; eax = eax &lt;&lt; 2</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">00402286   MOV WORD PTR DS:[ECX],AX         ; *(0x19FF20) = ax</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">00402358   LEA ECX,[EBP-38]                 ; ecx = 0x19FF20</div><div class="line">0040235B   ADD ECX,EAX                      ; ecx += loop_counter</div><div class="line">&lt;---- snip ----&gt;</div><div class="line">004023A3   MOVSX EAX,WORD PTR DS:[ECX]      ; eax = *(0x19FF20)</div><div class="line">004023A6   MOVSX ECX,WORD PTR DS:[EDX]      ; ecx = *(ecx)</div><div class="line">004023A9   CMP EAX,ECX</div><div class="line">004023AB   JE 004023D4                      ; if (eax == ecx) loop</div></pre></td></tr></table></figure>
+<p>note that our argument are passed through a loop where every characters are shifted to the left by 2 bit and compared to a value extracted from the stack segment. the extracted values are the same WORD values which is stored in the stack during the beginning of the program:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">3C 01 B8 01 B0 01 E4 01 7C 01 98 01 BC 01 C8 01 7C 01 D0 01 A0 01 94 01 7C 01 88 01 C8 01 84 01 D8 01 94 01 7C 01 BC 01 B8 01 94 01 CC 01</div></pre></td></tr></table></figure>
+<p>simple python code to decode it:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> unpack</div><div class="line">enc = <span class="string">"3C01B801B001E4017C019801BC01C8017C01D001A00194017C018801C8018401D80194017C01BC01B8019401CC01"</span>.decode(<span class="string">"hex"</span>)</div><div class="line">dec = <span class="string">""</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(enc), <span class="number">2</span>):</div><div class="line">    now = enc[i:i+<span class="number">2</span>]</div><div class="line">    dec += chr(unpack(<span class="string">"&lt;H"</span>, now)[<span class="number">0</span>] &gt;&gt; <span class="number">2</span>)</div><div class="line"><span class="keyword">print</span> dec</div></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/iZfkw5m.png" alt="flag"></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-9-Test-your-skill-EP02"><span class="toc-number">1.</span> <span class="toc-text">Challenge 9: Test your skill EP02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-12-Test-your-skill-EP03"><span class="toc-number">2.</span> <span class="toc-text">Challenge 12: Test your skill EP03</span></a></li></ol>
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick='$("#toc-footer").toggle();return false;'><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick='$("#nav-footer").toggle();return false;'><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2017 mokhdzanifaeq
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="http://github.com/mokhdzanifaeq">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- Google Analytics -->
+
+<!-- Disqus Comments -->
+
+
