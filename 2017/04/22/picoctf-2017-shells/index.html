@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://media.tenor.co/images/b70cdca79a1bc38c9823e78d9378702b/tenor.gif">
 <meta property="og:image" content="https://i.imgur.com/7BWreaZ.jpg">
 <meta property="og:image" content="https://i.imgur.com/GHzvnb4.jpg">
-<meta property="og:updated_time" content="2017-04-23T06:15:06.480Z">
+<meta property="og:updated_time" content="2017-04-23T06:16:13.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="picoCTF 2017 - Shells writeup & more">
 <meta name="twitter:description" content="as a part of my new year resolution (maybe a little late), i decided to improve my knowledge in binary exploitation. and since i’m pretty new at this, i ended up taking a shot at one of the binexploit">
@@ -145,7 +145,7 @@
 <p><img src="https://i.imgur.com/Sa4fsnA.jpg" alt="flag"></p>
 <p>the challenge was fun and all, and i learnt a ton about shellcodes. but since it’s a fairly simple question, i decided to test myself and try to acquire a full shell access. the only problem here is that both virtual memory allocated and the <code>read()</code> input was limited to 10 bytes</p>
 <p><img src="http://25.media.tumblr.com/ec131b67c3a55dcb99fa5e4ef5f3599b/tumblr_mmst60zClN1rhhrvto1_500.gif" alt="challenge accepted"></p>
-<h2 id="chaining-shellcodes"><a href="#chaining-shellcodes" class="headerlink" title="chaining shellcodes"></a>chaining shellcodes</h2><p>as mentioned above, we can execute any arbitrary 10 bytes shellcode. so the idea here is to chain multiple 10 bytes shellcodes by jumping back to the <code>read()</code> function at the end of each shellcode, while keeping enough space for other instructions. with this, we will have ample space to manipulate the stack and pass arbitrary arguments to the functions. also note that the <code>system()</code> function is called in the <code>win()</code> function. therefore, we can easily its address obtain by disassembling <code>win()</code> function. now putting it all together:</p>
+<h2 id="chaining-shellcodes"><a href="#chaining-shellcodes" class="headerlink" title="chaining shellcodes"></a>chaining shellcodes</h2><p>as mentioned above, we can execute any arbitrary 10 bytes shellcode. so the idea here is to chain multiple 10 bytes shellcodes by jumping back to the <code>read()</code> function at the end of each shellcode, while keeping enough space for other instructions. with this, we will have ample space to manipulate the stack and pass arbitrary arguments to the functions. also note that the <code>system()</code> function is called in the <code>win()</code> function. therefore, we can easily obtain its address by disassembling <code>win()</code> function. now putting it all together:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;\x90\x6A\x12\xBB\xC8\x85\x04\x08\xFF\xE3&quot; \</div><div class="line">&quot;\x90\x90\x90\xBB\xC6\x85\x04\x08\xFF\xE3/bin//sh&quot; \</div><div class="line">&quot;\x8D\x58\x0A\x53\x68\x4E\x85\x04\x08\xC3&quot;</div></pre></td></tr></table></figure>
 <p>let’s analyze the shellcode</p>
 <p><img src="https://i.imgur.com/FSN2OvX.jpg" alt="shellcode"></p>
