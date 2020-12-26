@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="the challenge was given as a 300x300 png file. the usual drill for an image challenge is to check the exif data. but everything was perfectly fine. opening the file with stegsolve, it was visible qui">
+<meta name="keywords" content="cybersocks,ctf,writeup,stega">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cybersocks Regional 2016 - color writeup">
+<meta property="og:url" content="http://mokhdzanifaeq.github.io/2016/12/14/cybersocks-regional-2016-color-writeup/index.html">
+<meta property="og:site_name" content="mkhdznfq">
+<meta property="og:description" content="the challenge was given as a 300x300 png file. the usual drill for an image challenge is to check the exif data. but everything was perfectly fine. opening the file with stegsolve, it was visible qui">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.imgur.com/QzxU7LU.png">
+<meta property="og:image" content="https://i.imgur.com/Ns7fB8O.png">
+<meta property="og:image" content="https://i.imgur.com/vOfpHrm.png">
+<meta property="og:image" content="https://i.imgur.com/qP7hN4O.png">
+<meta property="og:image" content="https://i.imgur.com/FQPl3h2.png">
+<meta property="og:image" content="https://i.imgur.com/cDjXhTM.png">
+<meta property="og:image" content="https://i.imgur.com/4zLyRWu.png">
+<meta property="og:updated_time" content="2017-04-10T12:27:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cybersocks Regional 2016 - color writeup">
+<meta name="twitter:description" content="the challenge was given as a 300x300 png file. the usual drill for an image challenge is to check the exif data. but everything was perfectly fine. opening the file with stegsolve, it was visible qui">
+<meta name="twitter:image" content="https://i.imgur.com/QzxU7LU.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Cybersocks Regional 2016 - color writeup</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/04/22/picoctf-2017-shells/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/11/28/kpmg-cyber-security-challenge-2016-writeups/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+    </span>
+    <br/>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LSB-steganography"><span class="toc-number">1.</span> <span class="toc-text">LSB steganography</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solving-the-problem"><span class="toc-number">2.</span> <span class="toc-text">solving the problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-working-alternative"><span class="toc-number">3.</span> <span class="toc-text">a working alternative</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+          <header id="header">
+  <a href="/">
+  
+    
+      <div id="logo" style="background-image: url(/images/logo.png);"></div>
+    
+  
+    <div id="title">
+      <h1>mkhdznfq</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#"><i class="fa fa-bars fa-2x"></i></a>
+      </li>
+       
+        <li><a href="/">Home</a></li>
+       
+        <li><a href="/archives/">Archives</a></li>
+       
+        <li><a href="http://github.com/mokhdzanifaeq">Projects</a></li>
+      
+    </ul>
+  </div>
+</header>
+
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cybersocks Regional 2016 - color writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">mkhdznfq</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-12-14T10:03:08.000Z" itemprop="datePublished">2016-12-14</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ctf/">ctf</a>, <a class="tag-link" href="/tags/cybersocks/">cybersocks</a>, <a class="tag-link" href="/tags/stega/">stega</a>, <a class="tag-link" href="/tags/writeup/">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><img src="https://i.imgur.com/QzxU7LU.png" alt="color"></p>
+<p>the challenge was given as a 300x300 png file. the usual drill for an image challenge is to check the exif data. but everything was perfectly fine. opening the file with <a href="http://www.caesum.com/handbook/stego.htm" target="_blank" rel="noopener">stegsolve</a>, it was visible quite soon that there are some data embedded in the LSB (first bitplane) for every channel</p>
+<p><img src="https://i.imgur.com/Ns7fB8O.png" alt="stegsolve"></p>
+<p>unfortunately, using built-in data extract function in stegsolve will only produce some garbage values. bummer</p>
+<p><img src="https://i.imgur.com/vOfpHrm.png" alt="extract"></p>
+<p>since i was certain the flag was embeded in the LSB. let’s extract the data manually (or well, ‘scriptally’). yeah, sure there are existing tools that can extract the data (like <a href="https://github.com/zed-0xff/zsteg" target="_blank" rel="noopener">zsteg</a> ;p). but for the sake of knowledge, i’ll write this through.</p>
+<h2 id="LSB-steganography"><a href="#LSB-steganography" class="headerlink" title="LSB steganography"></a>LSB steganography</h2><p>before we jump to the extracting part, let’s talk how the data is embeded in each pixel. well a pixel is the simplest unit in data imagery and each of it can be expressed further in terms of channels. there are many color models (RGB, CYMK, etc.) available out there and each of these are made of combinations of primary color channels – in our case, each pixel is represented by red channel, green channel, blue channel and alpha channel (stores transparency information) which also known as RGBA. this individual channel are represented in a whole number (up to 255) which can be expressed further in 8 bits (example: 255 = 0b11111111)</p>
+<p><img src="https://i.imgur.com/qP7hN4O.png" alt="pixel"></p>
+<p>every bits in the number represent a “bit plane” with the least significant bit representing the first bit plane, and the most significant bit represent the eighth bit plane</p>
+<p><img src="https://i.imgur.com/FQPl3h2.png" alt="bitplanes"></p>
+<p>in LSB stenography, the least significant bit plane in every channel is manipulated to store the hidden data. consider we want to hide the letter “A”. the letter has an ASCII code of 65 which can be represented as 1000001 in binary. since every pixel in our image contains 4 channels, we will need 2 pixel to accommodate an 8 bit data (4 bit in each pixel) in LSB</p>
+<p><img src="https://i.imgur.com/cDjXhTM.png" alt="embed"></p>
+<h2 id="solving-the-problem"><a href="#solving-the-problem" class="headerlink" title="solving the problem"></a>solving the problem</h2><p>now let’s move on how to extract the hidden data from our image. all we need to do is get all the channel values for each pixel (in our only the first row pixels are embeded with data) and mask off all the bits except LSB using AND bitwise trick (&amp; 1). the result will then saved to a stream which will be decoded to ASCII char in order to produce the hidden data. simple extraction script are as below:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"> </span><br><span class="line">img = Image.open(<span class="string">"990d11bb95600342bd63afe6a9e962a5_color.png"</span>)</span><br><span class="line">stream = <span class="string">""</span></span><br><span class="line">output = <span class="string">""</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># loop each pixel in the first row (y = 0)</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(img.size[<span class="number">0</span>]):</span><br><span class="line"> <span class="comment"># loop for every channel</span></span><br><span class="line"> <span class="keyword">for</span> channel <span class="keyword">in</span> img.getpixel( (x, <span class="number">0</span>) ):</span><br><span class="line">  <span class="comment"># mask all bit except LSB &amp; concat to stream</span></span><br><span class="line">  stream += str(channel &amp; <span class="number">1</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># loop through every 8 bit</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(stream), <span class="number">8</span>):</span><br><span class="line"> <span class="comment"># convert binary to ascii char &amp; concat to output stream</span></span><br><span class="line"> output += chr( int(stream[i:i+<span class="number">8</span>], <span class="number">2</span>) )</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> output</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/4zLyRWu.png" alt="flag"></p>
+<h2 id="a-working-alternative"><a href="#a-working-alternative" class="headerlink" title="a working alternative"></a>a working alternative</h2><p>since stegsolve kinda fucked up with the channel order (the channels were read as argb instead of rgba). <a href="https://gist.github.com/mokhdzanifaeq/540a07334764f6ca0d94b0e60592e378" target="_blank" rel="noopener">HERE</a> is a substitute script for data extraction. unlike zsteg which can only decode from one bitplane at a time, the script can include multiple bitplane (just like stegsolve, with an actual working channel order). might be useful in the future!</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LSB-steganography"><span class="toc-number">1.</span> <span class="toc-text">LSB steganography</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solving-the-problem"><span class="toc-number">2.</span> <span class="toc-text">solving the problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-working-alternative"><span class="toc-number">3.</span> <span class="toc-text">a working alternative</span></a></li></ol>
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick='$("#toc-footer").toggle();return false;'><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick='$("#nav-footer").toggle();return false;'><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 mokhdzanifaeq
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="http://github.com/mokhdzanifaeq">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- Google Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'mokhdzanifaeq';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
